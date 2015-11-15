@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 		strtok(line, "\n");
 		parse(line, args);
 
-		if(*(args[0]) != '\n') {
+		if(*args[0] != '\n') {
 			execute(args);
 		}
 	} while(TRUE);

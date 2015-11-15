@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include <time.h>
 #include <sys/wait.h>
-#include <signal.h>
 #include <string.h>
 
 #define TRUE 1
