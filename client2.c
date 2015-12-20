@@ -24,9 +24,16 @@ int main(int argc, char *argv[])
 
 	for(;;) {
 		printf("> ");
-		n = readline(STDIN_FILENO, buf, MAXLINE);
-
-		writen(sockfd, buf, n);
+		
+		if(!fgets(buf, MAXLINE, stdin)) {
+			break;
+		}
+		
+		n = strlen(buf);
+		
+		if(writen(sockfd, buf, n) != n) {
+			PERR("writen")
+		}
 		
 		if((n = readline(sockfd, buf, MAXLINE)) < 0) {
 			PERR("readline")

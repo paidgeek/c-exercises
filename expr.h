@@ -1,0 +1,2 @@
+
+double evaluate(char *expr);
