@@ -59,14 +59,21 @@ int main(int argc, char *argv[])
 
 	Bind(listenfd, (SA*) &servaddr, sizeof(servaddr));
 	Listen(listenfd, LISTENQ);
-	clilen = sizeof(cliaddr);
 	
 	if(signal(SIGCHLD, sig_child) < 0) {
 		PERR("signal")
 	}
 	
 	for(;;) {
-		connfd = Accept(listenfd, (SA *) &cliaddr, &clilen);
+		clilen = sizeof(cliaddr);
+		
+		if((connfd = accept(listenfd, (SA *) &cliaddr, &clilen)) < 0) {
+			if(errno == EINTR) {
+				continue;
+			} else {
+				PERR("accept")
+			}
+		}
 		
 		if((childpid = fork()) < 0) {
 			PERR("fork")
