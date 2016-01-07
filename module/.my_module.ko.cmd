@@ -1,0 +1,1 @@
+cmd_/home/paidgeek/Desktop/c-exercises/module/my_module.ko := ld -r -m elf_i386 -T ./scripts/module-common.lds --build-id  -o /home/paidgeek/Desktop/c-exercises/module/my_module.ko /home/paidgeek/Desktop/c-exercises/module/my_module.o /home/paidgeek/Desktop/c-exercises/module/my_module.mod.o
