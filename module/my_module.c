@@ -25,6 +25,8 @@ struct file_operations fops = {
 module_init(zacetni_modul);
 module_exit(koncni_modul);
 
+int nreads;
+
 static int __init zacetni_modul(void)
 {
 	Major = register_chrdev(0, DEVICE_NAME, &fops);
@@ -36,6 +38,8 @@ static int __init zacetni_modul(void)
 	}
 
 	printk(KERN_INFO "Glavno stevilo je %d.\n", Major);
+	
+	nreads = 0;
 
 	return 0;
 }
@@ -57,18 +61,28 @@ int sprosti(struct inode *inode, struct file *file)
 
 ssize_t beri(struct file *filp, char __user *buff, size_t len, loff_t *offset)
 {
-	char *msg = "Zivjo!\n";
-	int size = strlen(msg);
-	if ( *offset >= size)
+	//char msg[20];
+	int size;
+	
+	char *msg = "awd";
+	
+	//size = sprintf(msg, "Odprt sem bil %d-krat\n");
+	size = strlen(msg);
+
+	if (*offset >= size) {
 		return 0;
+	}
 
-	if ( len > size - *offset)
+	if (len > size - *offset) {
 		len = size - *offset;
+	}
 
-	if ( copy_to_user( buff, msg, len) )
+	if (copy_to_user( buff, msg, len)) {
 		return -EFAULT;
+	}
 
 	*offset += len;
+	
 	return len;
 }
 
