@@ -3,33 +3,39 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define PERR(msg) { perror(msg); exit(1); }
 
-int main(int argc, char *argv)
+void test(int fd, char *buff, size_t len)
 {
-	char buf[100];
-	int fd, n;
+	int n;
 	
-	printf("%d\n", sprintf(buf, "awd"));
-	
-	printf("%d\n", strlen(buf));
-	
-	printf("%s\n", buf);
-	
-	return 0;
+	char *b = "hey\n";
 
-	if((fd = open("/dev/my_module", O_RDONLY)) < 0) {
-		PERR("open")
-	}
-
-	if((n = read(fd, &buf, sizeof(buf))) < 0) {
+	write(fd, b, strlen(b));
+	
+	if((n = read(fd, buff, strlen(b))) < 0) {
 		PERR("read")
 	}
 	
-	buf[n] = '\0';
+	buff[n] = '\0';
 
-	printf("%s", buf);
+	printf("%s", buff);
+}
+
+int main(int argc, char *argv)
+{
+	char buff[100];
+	int fd;
+	
+	if((fd = open("/dev/my_module", O_RDWR)) < 0) {
+		PERR("open")
+	}
+	
+	test(fd, buff, 2);
+	//test(fd, buff, 4);
+	//test(fd, buff, 10);
 
 	if(close(fd) < 0) {
 		PERR("close")
